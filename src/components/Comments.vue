@@ -5,8 +5,8 @@
             <button style="background-color: #216CFF;" @click="addComment()" >Добавить</button>
         </div>
         <div class="comment-container" v-for="(item, index) in postData.comments" >
-            <p>{{ item }}</p>
-            <button style="background-color: #FF218B;" @click="remomveComment(index)">Удалить</button>
+            <p>{{ item.text }}</p>
+            <button style="background-color: #FF218B;" @click="removeComment(item.id)">Удалить</button>
         </div>
         <button class="close-comments-btn" style="background-color: #216CFF;" @click="toggleComments(postData.id)">Спрятать</button>
     </div>
@@ -33,11 +33,17 @@ import store from '../store';
         },
         methods: {
             addComment(){
-                store.state.posts.map(item => item.id == this.postData.id ? this.postData.comments.push(this.text) : item)
-                this.text = "";
+                if(this.text){
+                    const newComment = {
+                        id: this.postData.comments.length + 1,
+                        text: this.text
+                    };
+                    store.state.posts.map(item => item.id == this.postData.id ? this.postData.comments.push(newComment) : item)
+                    this.text = "";
+                }
             },
-            remomveComment(index){
-                this.postData.comments.splice(index, 1);
+            removeComment(id){
+                this.postData.comments = this.postData.comments.filter(item => item.id != id);
             }
         }
     }

@@ -19,14 +19,14 @@
     export default {
         data(){
             return{
-                text: store.state.editablePost.text
+                text: store.state.editablePost.title
             }
         },
         methods: {
             editPost(id){
                 console.log(store.state.editablePost);
                 if(this.text){
-                store.state.posts.map(item => { if(item.id == id) item.text = this.text })
+                store.state.posts.map(item => { if(item.id == id) item.title = this.text })
                 store.state.showEditComponent = false;
                 }
             },

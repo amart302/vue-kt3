@@ -1,12 +1,6 @@
 import { createStore } from "vuex";
 
-const posts = [
-    {
-        id: 1,
-        text: "safasfasgf",
-        comments: [ "agasdasfds" ]
-    }
-];
+const posts = [];
 
 const store = createStore({
     state(){

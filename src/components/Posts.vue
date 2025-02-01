@@ -1,7 +1,7 @@
 <template>
     <div class="posts-container">
         <div class="post-container" v-for="item in $store.state.posts">
-            <p>{{ item.text }}</p>
+            <p>{{ item.title }}</p>
             <hr>
             <div class="post-child-container">
                 <button style="background-color: #216CFF;" @click="toggleComments(item.id)">Комментарии</button>

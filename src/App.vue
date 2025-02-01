@@ -28,7 +28,7 @@
         if(this.text == "") return;
         const newPost = {
           id: store.state.posts.length + 1,
-          text: this.text,
+          title: this.text,
           comments: []
         };
         store.state.posts.push(newPost);
