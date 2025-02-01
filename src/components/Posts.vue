@@ -1,38 +1,42 @@
 <template>
     <div class="posts-container">
-      <div class="post-container" v-for="item in posts">
+      <div class="post-container" v-for="item in $store.state.posts">
         <p>{{ item.text }}</p>
         <hr>
         <div>
-          <button style="background-color: #216CFF;">Комментарии</button>
+          <button style="background-color: #216CFF;" @click="() => showCommentsComponent = !showCommentsComponent">Комментарии</button>
           <span>Количество комментариев - {{ item.comments.length }}</span>
-          <button style="background-color: #216CFF;" @click="showEditComponent(item.id)">Изменить</button>
+          <button style="background-color: #216CFF;" @click="() => {
+            $store.state.showEditComponent = true;
+            $store.state.editablePost = item;            
+          }">Изменить</button>
           <button style="background-color: #FF218B;" @click="removePost(item.id)">Удалить</button>
         </div>
+        <Comments v-if="showCommentsComponent" :postData="item" />
       </div>
     </div>
 </template>
 
 <script>
- export default {
-    props: {
-        posts: {
-            type: Array,
-            required: true
+    import store from '../store';
+    import Comments from './Comments.vue';
+
+    export default {
+        data(){
+            return{
+                showCommentsComponent: false
+            }
         },
-        showEditComponent: {
-            type: Function,
-            required: true
-        },
-        removePost: {
-            type: Function,
-            required: true
+        components: { Comments },
+        methods: {
+            removePost(id){
+                store.state.posts = store.state.posts.filter(item => item.id != id);
+            }
         }
     }
- }
 </script>
 
-<style>
+<style scoped>
     .posts-container{
         display: grid;
         grid-template-columns: 1fr;
@@ -40,6 +44,7 @@
         margin-top: 40px;
     }
     .post-container{
+        width: 960px;
         background-color: white;
         padding: 20px;
         display: flex;
@@ -48,7 +53,9 @@
         border-radius: 10px;
     }
     .post-container p{
+        width: 100%;
         font-size: 20px;
+        word-wrap: break-word;
     }
     .post-container div{
         display: grid;
