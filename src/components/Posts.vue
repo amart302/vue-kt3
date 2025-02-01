@@ -1,19 +1,19 @@
 <template>
     <div class="posts-container">
-      <div class="post-container" v-for="item in $store.state.posts">
-        <p>{{ item.text }}</p>
-        <hr>
-        <div>
-          <button style="background-color: #216CFF;" @click="() => showCommentsComponent = !showCommentsComponent">Комментарии</button>
-          <span>Количество комментариев - {{ item.comments.length }}</span>
-          <button style="background-color: #216CFF;" @click="() => {
-            $store.state.showEditComponent = true;
-            $store.state.editablePost = item;            
-          }">Изменить</button>
-          <button style="background-color: #FF218B;" @click="removePost(item.id)">Удалить</button>
+        <div class="post-container" v-for="item in $store.state.posts">
+            <p>{{ item.text }}</p>
+            <hr>
+            <div class="post-child-container">
+                <button style="background-color: #216CFF;" @click="toggleComments(item.id)">Комментарии</button>
+                <span>Количество комментариев - {{ item.comments.length }}</span>
+                <button style="background-color: #216CFF;" @click="() => {
+                    $store.state.showEditComponent = true;
+                    $store.state.editablePost = item;            
+                }">Изменить</button>
+                <button style="background-color: #FF218B;" @click="removePost(item.id)">Удалить</button>
+            </div>
+            <Comments v-if="showComments[item.id]" :postData="item" :toggleComments="toggleComments" />
         </div>
-        <Comments v-if="showCommentsComponent" :postData="item" />
-      </div>
     </div>
 </template>
 
@@ -24,13 +24,16 @@
     export default {
         data(){
             return{
-                showCommentsComponent: false
+                showComments: {}
             }
         },
         components: { Comments },
         methods: {
             removePost(id){
                 store.state.posts = store.state.posts.filter(item => item.id != id);
+            },
+            toggleComments(postId) {
+                this.showComments[postId] = !this.showComments[postId];
             }
         }
     }
@@ -57,7 +60,7 @@
         font-size: 20px;
         word-wrap: break-word;
     }
-    .post-container div{
+    .post-child-container{
         display: grid;
         grid-template-columns: 160px 1fr 120px 120px;
         gap: 10px;
